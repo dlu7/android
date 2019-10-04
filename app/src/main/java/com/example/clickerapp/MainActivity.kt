@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private var currentimage: Int = 0
-    internal var images = intArrayOf(R.drawable.cooky, R.drawable.milkteaboba)
+    internal var images = intArrayOf(R.drawable.cooky, R.drawable.milkteaboba, R.drawable.honeypeachboba, R.drawable.matchagreenteaboba, R.drawable.strawberryguavaboba)
 
     fun buttonclick() {
         imgview = findViewById<View>(R.id.myImage) as ImageView
