@@ -3,19 +3,22 @@ package com.example.clickerapp.ui
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.clickerapp.util.rotate90
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.example.clickerapp.R
+import com.example.clickerapp.model.Gif
 import com.example.clickerapp.viewmodel.CountViewModel
+import com.example.clickerapp.viewmodel.GifViewModel
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     //initializing variable countviewmodel
     private lateinit var countViewModel: CountViewModel
+    private lateinit var gifViewModel: GifViewModel
 
     //initializing the variable, counter, to 0 because # of clicks start at 0
     private var counter: Long = 0
@@ -49,6 +52,10 @@ class MainActivity : AppCompatActivity() {
         countViewModel.getUserCount(getUsername()).observe(this,
             androidx.lifecycle.Observer { updateCounter(it) })
 
+        gifViewModel = ViewModelProviders.of(this).get(GifViewModel::class.java)
+        gifViewModel.getRandomGif("android").observe(this,
+            androidx.lifecycle.Observer { loadGif(it) })
+
         //function that allows the button that says "Click Me!" in emulator to set imgview to the
         //  currentimage and rotate through the pictures in the array order while clicker counts go up
         myButton.setOnClickListener {
@@ -76,8 +83,6 @@ class MainActivity : AppCompatActivity() {
             //  username in emulator so they can resume where they ended in last session
             countViewModel.setUserCount(getUsername(), counter + 1)
         }
-
-
     }
 
     //function to update the counter that counts how many clicks in the app
@@ -87,5 +92,11 @@ class MainActivity : AppCompatActivity() {
         counter = count
         //myImage.rotate90()
         Drip1.text = counter.toString()
+    }
+
+    private fun loadGif(gif: Gif){
+        Glide.with(this)
+            .load(gif.url)
+            .into(image)
     }
 }
